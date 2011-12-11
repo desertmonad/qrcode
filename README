@@ -2,11 +2,40 @@
 
 a qrcode generator in clojure
 
-I was curious how qrcode generation worked so I decided to download the spcefication pdf and start from scratch with clojure.  This codebase 'works' but I KNOW the scoring for each mask that can be applied to the result is not yet right.  I need to spend some time specifically on the algorithm that scores the blocks of similar color (white/black).  See the spec for details and feel free to reach out to me if you have a cool implementation for the scoring. :-)
+I was curious how qrcode generation worked so I decided to download the specification pdf and start from scratch with clojure.  This codebase 'works' but I KNOW the scoring/selection for each mask that can be applied to the qrcode is not yet right.  Specifically the algorithm that scores the blocks of similar color (white/black) needs attention.  See the spec for details and feel free to reach out to me if you have a cool implementation for the scoring. :-)
+
+Also, keep in mind, the goal was NOT to write a 'better/faster/cooler' qrcode encoder than what is already out there.  The goal was to simply understand the process and write it in clojure using sequences and a (hopefully) clojure-esque style.  There are lots of places where the code can be improved to be more efficient/faster.  BUT you can watch a qrcode being assembled along the way by examining the data-map that is produced at each step IF you are interested.  Each step returns a map with more added to it so you can monitor what is going on.
+
+Also, it does not do the kanji encoding (but it would not be hard to add).  It only does numeric, alphanumeric, and 8-bit-byte modes.
+
+If you need to generate qrcodes in your code, you are probably better served with one of the supported java libraries that do WAY more than this one
+(see http://code.google.com/p/zxing/)
+
+However, if anyone is interested in trying to make this more usable in production, let me know ... it might be fun.
 
 ## Usage
 
-TODO
+The main function is 'encode'.  It takes the message to encode and the error correction level as a keyword (:L :M :Q or :H):
+
+   (requre '[qrcode.core :as qrc])
+
+   (-> (qrc/encode "http://github.com" :L)
+       (qrc/draw)
+       (qrc/save-as "/tmp/qrcode"))
+
+This would generate a file /tmp/qrcode.png that you should be able to read with your reader.  I know the scoring and selection of the mask is not right but it does work.  The image is generated with 5 px square regions per bit.
+
+The qrc/encode function handles calling each function necessary to make a qrcode but you could call them manually and see the resulting map to see what is happenning.  See the function definition to see each step.
+
+## Things to do
+
+fix the scoring/selection of masks
+enhance it to allow different image types (currently only .png)
+add kanji mode
+add optimizations to allow mixed modes
+add colors and other embellishments?
+add options for image sizing
+add a decoder?
 
 ## License
 
