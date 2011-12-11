@@ -1,0 +1,15 @@
+# qrcode
+
+a qrcode generator in clojure
+
+I was curious how qrcode generation worked so I decided to download the spcefication pdf and start from scratch with clojure.  This codebase 'works' but I KNOW the scoring for each mask that can be applied to the result is not yet right.  I need to spend some time specifically on the algorithm that scores the blocks of similar color (white/black).  See the spec for details and feel free to reach out to me if you have a cool implementation for the scoring. :-)
+
+## Usage
+
+TODO
+
+## License
+
+Copyright (C) 2011 pupcus
+
+Distributed under the Eclipse Public License, the same as Clojure.
